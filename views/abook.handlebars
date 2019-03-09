@@ -1,0 +1,57 @@
+<h1>Update Book Data: {{#each Title}}{{Title}}{{/each}}</h1>
+
+<table>
+  <thead>
+    <th>Title</th>
+  </thead>
+  <tbody>
+    {{#each Title}}
+  <tr>
+    <td><input type="text" name="Title" value="{{Title}}"></input></td>
+    <td><button>Delete</button></td>
+  </tr>
+    {{/each}}
+  </tbody>
+  <h4><td><button>Update Title</button></td></h4>
+  <thead>
+    <th>Author First</th>
+    <th>Author Last</th>
+  </thead>
+  <tbody>
+    {{#each Authors}}
+    <tr>
+      <td><input type="text" name="Fname" value="{{Fname}}"></input>
+      <td><input type="text" name="Lname" value="{{Lname}}"></input>
+      <td><button>Delete</button></td>
+      {{/each}}
+    </tr>
+  </tbody>
+  <h4><td><button>Add Author</button></h4>
+
+  <thead>
+    <th>Publisher(s)</th>
+  </thead>
+  <tbody>
+    {{#each Publishers}}
+  <tr>
+    <td><input type="text" name="pub_name" value="{{pub_name}}"></input></td>
+    <td><button>Delete</button></td>
+  </tr>
+    {{/each}}
+  </tbody>
+
+  <h4><td><button>Add Publisher</button></h4>
+  <thead>
+    <th>Genre(s)</th>
+  </thead>
+  <tbody>
+    {{#each Genres}}
+  <tr>
+    <td><input type="text" name="gen_name" value="{{gen_name}}"></input></td>
+    <td><button>Delete</button></td>
+  </tr>
+    {{/each}}
+  </tbody>
+  <h4><td><button>Add Genre</button></h4>
+
+</table>
