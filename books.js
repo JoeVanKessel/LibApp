@@ -105,8 +105,9 @@ module.exports = router;
      //console.log("here",req.body.Title);
      var mysql = req.app.get('mysql');
      var context = {};
-     var sql = "SELECT ID, Title FROM Book WHERE Title = ?";
-     var inserts = [req.body.Title];
+     var sql = "SELECT b.ID, Title FROM (Book b INNER JOIN Book_Authors ba ON b.ID = ba.BID INNER JOIN Author a ON ba.AID = a.ID) WHERE Title = ? OR (Fname = ? AND Lname = ?)";
+     var inserts = [req.body.Title, req.body.Fname, req.body.Lname];
+     console.log(req.body.Fname);
      sql = mysql.pool.query(sql, inserts, function(error, results, feilds){
        if (error){
          console.log(error);
