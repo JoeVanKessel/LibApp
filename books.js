@@ -93,7 +93,7 @@ module.exports = router;
     function complete(){
       callbackcount++;
      if(callbackcount >= 4){
-        console.log(context);
+        //console.log(context);
         res.render('abook',context);
       }
     }
@@ -105,18 +105,25 @@ module.exports = router;
      //console.log("here",req.body.Title);
      var mysql = req.app.get('mysql');
      var context = {};
-     var sql = "SELECT b.ID, Title FROM (Book b INNER JOIN Book_Authors ba ON b.ID = ba.BID INNER JOIN Author a ON ba.AID = a.ID) WHERE Title = ? OR (Fname = ? AND Lname = ?)";
-     var inserts = [req.body.Title, req.body.Fname, req.body.Lname];
-     console.log(req.body.Fname);
+     var sql = "SELECT DISTINCT b.ID, Title FROM (Book b INNER JOIN Book_Authors ba ON b.ID = ba.BID INNER JOIN Author a ON ba.AID = a.ID INNER JOIN Book_Publisher bp ON b.ID = bp.BID INNER JOIN Publisher p ON bp.PID = p.ID) WHERE Title = ? OR (Fname = ? AND Lname = ?) OR pub_name = ?";
+     var inserts = [req.body.Title, req.body.Fname, req.body.Lname, req.body.pub_name];
      sql = mysql.pool.query(sql, inserts, function(error, results, feilds){
        if (error){
          console.log(error);
          res.end();
        }
        else{
-         context.Book = results;
-         console.log(context);
-         res.render('books', context);
+//Attempting to check if results are empty
+    //     if (results == '[[ ]]'){
+           //res.write("No Titles Matching Search");
+  //         console.log("here");
+        //   res.redirect('/books');
+      //   }
+    //     else{
+           context.Book = results;
+           console.log(context);
+           res.render('books', context);
+    //     }
        }
      });
   });
