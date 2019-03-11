@@ -3,7 +3,6 @@ var express = require('express');
 var router = express.Router();
 module.exports = router;
 
-
   function getallbooks(context, mysql, complete){
     mysql.pool.query("SELECT DISTINCT ID, Title from Book", function(error, results, fields){
     if(!!error){
@@ -11,7 +10,7 @@ module.exports = router;
     }
     else{
       console.log('sucessfull query');
-      console.log(results);
+  //    console.log(results);
       context.Book = results;
       complete();
     }
@@ -94,16 +93,19 @@ module.exports = router;
     function complete(){
       callbackcount++;
      if(callbackcount >= 4){
+        console.log(context);
         res.render('abook',context);
       }
     }
   });
 
+
+
   router.post('/', function(req, res){
-    console.log(req.body.Title);
+     //console.log("here",req.body.Title);
      var mysql = req.app.get('mysql');
-     var sql = {};
-     sql = "Insert INTO Book (Title) Values (?)";
+     var context = {};
+     var sql = "SELECT ID, Title FROM Book WHERE Title = ?";
      var inserts = [req.body.Title];
      sql = mysql.pool.query(sql, inserts, function(error, results, feilds){
        if (error){
@@ -111,7 +113,9 @@ module.exports = router;
          res.end();
        }
        else{
-         res.redirect('/books');
+         context.Book = results;
+         console.log(context);
+         res.render('books', context);
        }
      });
   });
