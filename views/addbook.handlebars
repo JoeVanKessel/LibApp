@@ -1,8 +1,21 @@
 <h1>Add Book To Catalog</h1>
-  <form id="inputs" action='/books' method="post">
+
+  <form id="inputs" action='/addbook' method="post">
     Title:<input type='text' name='Title'><br>
     Author First:<input type='text' name='Fname'> Author Last:<input type='text' name='Lname'><br>
     Publisher:<input type='text' name='pub_name'><br>
     Genre:<input type='text' name='gen_name'><br>
     <input type='submit' value='Add'><br>
   </form>
+
+<p> {{message}} </p>
+<p> {{Title}} </p>
+
+
+<form id = "form-button" action='/books' method='get'>
+  <input type = 'submit' value = 'Show all Books'><br>
+</form>
+<form id = "form-button" action='/' method='get'>
+  <input type = 'submit' value = 'HOME'><br>
+</form>
+</br>

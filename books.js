@@ -94,17 +94,11 @@ module.exports = router;
     function complete(){
       callbackcount++;
      if(callbackcount >= 4){
-        console.log(context);
+      //  console.log(context);
         res.render('abook',context);
       }
     }
   });
-
-  router.post('/:ID', function(req, res){
-
-  })
-
-
 
   router.post('/', function(req, res){
      //console.log("here",req.body.Title);
@@ -126,7 +120,7 @@ module.exports = router;
       //   }
     //     else{
            context.Book = results;
-           console.log(context);
+        //   console.log(context);
            res.render('books', context);
     //     }
        }
