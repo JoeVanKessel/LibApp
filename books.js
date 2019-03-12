@@ -1,4 +1,3 @@
-
 var express = require('express');
 var router = express.Router();
 module.exports = router;
@@ -68,12 +67,13 @@ module.exports = router;
   }
 
   function getTitleByBookId(res, mysql, context, id, complete){
-    var sql = 'SELECT Title FROM Book b WHERE b.ID = ?';
+    var sql = 'SELECT Title, ID FROM Book b WHERE b.ID = ?';
     var inserts = [id];
     mysql.pool.query(sql,inserts, function(error, results, fields){
       if(error){
         res.end();
       }
+      console.log()
       context.Title = results;
       complete();
     });
@@ -90,14 +90,19 @@ module.exports = router;
     getAuthorsByBookId(res, mysql, context, req.params.ID, complete);
     getPublishersByBookId(res, mysql, context, req.params.ID, complete);
     getGenresByBookId(res, mysql, context, req.params.ID, complete);
+    context.ID = req.params.ID;
     function complete(){
       callbackcount++;
      if(callbackcount >= 4){
-        //console.log(context);
+        console.log(context);
         res.render('abook',context);
       }
     }
   });
+
+  router.post('/:ID', function(req, res){
+
+  })
 
 
 
@@ -105,8 +110,8 @@ module.exports = router;
      //console.log("here",req.body.Title);
      var mysql = req.app.get('mysql');
      var context = {};
-     var sql = "SELECT DISTINCT b.ID, Title FROM (Book b INNER JOIN Book_Authors ba ON b.ID = ba.BID INNER JOIN Author a ON ba.AID = a.ID INNER JOIN Book_Publisher bp ON b.ID = bp.BID INNER JOIN Publisher p ON bp.PID = p.ID) WHERE Title = ? OR (Fname = ? AND Lname = ?) OR pub_name = ?";
-     var inserts = [req.body.Title, req.body.Fname, req.body.Lname, req.body.pub_name];
+     var sql = "SELECT DISTINCT b.ID, Title FROM (Book b INNER JOIN Book_Authors ba ON b.ID = ba.BID INNER JOIN Author a ON ba.AID = a.ID INNER JOIN Book_Publisher bp ON b.ID = bp.BID INNER JOIN Publisher p ON bp.PID = p.ID INNER JOIN Book_Genre bg ON b.ID = bg.BID INNER JOIN Genres g ON bg.GID = g.ID) WHERE Title = ? OR (Fname = ? AND Lname = ?) OR pub_name = ? OR gen_name = ?";
+     var inserts = [req.body.Title, req.body.Fname, req.body.Lname, req.body.pub_name, req.body.gen_name];
      sql = mysql.pool.query(sql, inserts, function(error, results, feilds){
        if (error){
          console.log(error);
