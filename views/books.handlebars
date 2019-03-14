@@ -1,5 +1,14 @@
+<nav class="nav-bar-fixed-top">
+  <div class='nav-container'>
+      <a href = '/addbook'>Add Book To Catalog</a>
+      <a href = '/books'>Search Books</a>
+      <a href = '/'>Home</a>
+  </div>
+</nav>
+
+
 <div class = 'search-container'>
-  <h1>Find Title To Update:</h1>
+  <h1>Find Books:</h1>
 <!--
 <form id="addbook" action="/books" method="post">
     Title: <input type="text" name="Title"><br>
@@ -19,22 +28,16 @@
 <div class = 'table-container'>
   <table>
     <thead>
-      <th>Resulting Titles</th>
+      <th>Click to View Detials:</th>
     </thead>
     <tbody>
       {{#each Book}}
       <tr>
-        <td><a href = /books/{{ID}}>{{Title}}</a></td>
+        <td><a href = /abook/{{ID}}>{{Title}}</a></td>
       </tr>
       {{/each}}
     </tbody>
   </table>
 </div>
 
-<form id = "form-button" action='/books' method='get'>
-  <input type = 'submit' value = 'Show All'><br>
-</form>
-<form id = "form-button" action='/' method='get'>
-  <input type = 'submit' value = 'home'><br>
-</form>
 </br>

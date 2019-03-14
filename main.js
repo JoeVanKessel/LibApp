@@ -4,7 +4,6 @@ var bodyParser = require('body-parser');
 
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
-
 app.engine('handlebars', handlebars.engine);
 app.use(bodyParser.urlencoded({extended:true}));
 app.use('/static', express.static('public'));
@@ -13,6 +12,8 @@ app.set('port', process.argv[2]);
 app.set('mysql', mysql);
 app.use('/books', require('./books.js'));
 app.use('/addbook', require('./addbook.js'));
+app.use('/abook', require('./abook.js'));
+app.use('/navbar', require('./books.js'));
 app.use('/', express.static('public'));
 
 app.use(function(req,res){

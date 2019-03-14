@@ -3,8 +3,9 @@ var router = express.Router();
 module.exports = router;
 
 
-function AddTitle(req, res, mysql, complete, context){
+function AddTitle(req, res, mysql, complete, titleExistsInDB){
   //console.log(req.body.Title);
+  var titleID = {}
   var checkTitleExists = "SELECT ID FROM Book WHERE Title = ?";
   var sql = "INSERT INTO Book (Title) VALUES(?)";
   var inserts = [req.body.Title];
@@ -27,8 +28,10 @@ function AddTitle(req, res, mysql, complete, context){
         });
       }
       else{
-        console.log("Title Already Exists");
-        complete();
+      //  console.log("Title Already Exists");
+        titleID = results[0];
+        console.log(titleID);
+        titleExistsInDB(titleID);
       }
     }
   });
@@ -59,7 +62,7 @@ function AddAuthor(req, res, mysql, complete){
         });
       }
       else{
-        console.log("Author Already Exists");
+      //  console.log("Author Already Exists");
         complete();
       }
     }
@@ -117,7 +120,7 @@ function ConnectAuthorTitle(req, res, mysql, completetwo){
                   });
                 }
                 else{
-                  console.log('Connection Exists');
+            //      console.log('Connection Exists');
                   completetwo();
                 }
               }
@@ -154,7 +157,7 @@ function AddPublisher(req, res, mysql, complete){
       });
     }
     else{
-      console.log("Author Already Exists");
+    //  console.log("Author Already Exists");
       complete();
     }
   }
@@ -246,7 +249,7 @@ function AddGenre(req, res, mysql, complete){
       });
     }
     else{
-      console.log("Genre Already Exists");
+      //console.log("Genre Already Exists");
       complete();
     }
   }
@@ -254,7 +257,7 @@ function AddGenre(req, res, mysql, complete){
 }
 
 
-function ConnectGenreTitle(req, res, mysql, completetwo){
+function ConnectGenreTitle(req, res, mysql, completetwo, context){
   var sqlBid = "SELECT ID, Title FROM Book WHERE Title = ?";
   var insertsB = [req.body.Title];
   var sqlPid = "SELECT ID FROM Genres WHERE gen_name = ?";
@@ -282,6 +285,7 @@ function ConnectGenreTitle(req, res, mysql, completetwo){
             genreID  = results[0];
           //  console.log(publisherID.ID);
           //  console.log(bookID.ID);
+            context.ID = bookID.ID;
             var inserts = [bookID.ID, genreID.ID];
             var checkBookGenreExists = "SELECT BID, GID FROM Book_Genre WHERE BID = ? AND GID = ?";
             var sql = 'INSERT INTO Book_Genre (BID, GID) VALUES(?, ?)';
@@ -304,7 +308,7 @@ function ConnectGenreTitle(req, res, mysql, completetwo){
                   });
                 }
                 else{
-                  console.log('Connection Exists');
+              //    console.log('Connection Exists');
                   completetwo();
                 }
               }
@@ -338,7 +342,7 @@ router.post('/', (req, res)=>{
     res.render('addbook', context);
   }
   else{
-    AddTitle(req, res, mysql, complete);
+    AddTitle(req, res, mysql, complete, titleExistsInDB);
     AddAuthor(req, res, mysql, complete);
     AddPublisher(req, res, mysql, complete);
     AddGenre(req, res, mysql, complete);
@@ -348,15 +352,22 @@ router.post('/', (req, res)=>{
     if(callbackcount >= 4){
       ConnectPublisherTitle(req, res, mysql, completetwo);
       ConnectAuthorTitle(req, res, mysql, completetwo);
-      ConnectGenreTitle(req, res, mysql, completetwo);
+      ConnectGenreTitle(req, res, mysql, completetwo, context);
       function completetwo(){
         callbackcounttwo++;
         if (callbackcounttwo >= 3){
           context.Title = req.body.Title;
-          context.message = "Added sucessfully"
+          context.message = "Added sucessfully. Cick to Update";
           res.render('addbook', context);
         }
       }
     }
+  }
+  function titleExistsInDB(id){
+    context.Title = req.body.Title;
+    context.ID = id.ID;
+  //  console.log(context);
+    context.message = "Title Already Exists in Database. Click to Update:";
+    res.render('addbook', context);
   }
 });
