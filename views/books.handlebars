@@ -1,0 +1,43 @@
+<nav class="nav-bar-fixed-top">
+  <div class='nav-container'>
+      <a href = '/addbook'>Add Book To Catalog</a>
+      <a href = '/books'>Search Books</a>
+      <a href = '/'>Home</a>
+  </div>
+</nav>
+
+
+<div class = 'search-container'>
+  <h1>Find Books:</h1>
+<!--
+<form id="addbook" action="/books" method="post">
+    Title: <input type="text" name="Title"><br>
+    <input type="submit" value="Submit">
+ </form>
+-->
+  <form id="inputs" action='/books' method="post">
+    Title:<input type='text' name='Title'><br>
+    Author First:<input type='text' name='Fname'> Author Last:<input type='text' name='Lname'><br>
+    Publisher:<input type='text' name='pub_name'><br>
+    Genre:<input type='text' name='gen_name'><br>
+    <input type='submit' value='search'><br>
+  </form>
+  <br/>
+</div>
+
+<div class = 'table-container'>
+  <table>
+    <thead>
+      <th>Click to View Detials:</th>
+    </thead>
+    <tbody>
+      {{#each Book}}
+      <tr>
+        <td><a href = /abook/{{ID}}>{{Title}}</a></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+</br>

@@ -1,0 +1,70 @@
+<nav class="nav-bar-fixed-top">
+  <div class='nav-container'>
+      <a href = '/addbook'>Add Book To Catalog</a>
+      <a href = '/books'>Search Books</a>
+      <a href = '/'>Home</a>
+  </div>
+</nav>
+<div>
+<h1>{{#each Title}}{{Title}}{{/each}}:</h1>
+
+<form action = '/abook/{{ID}}' method='post'>
+
+
+<table>
+  <thead>
+    <th>Title</th>
+  </thead>
+  <tbody>
+    {{#each Title}}
+          <tr>
+            <td>{{Title}}</td>
+          </tr>
+          {{/each}}
+      </form>
+
+  </tbody>
+
+
+  <thead>
+    <th>Author First</th>
+    <th>Author Last</th>
+  </thead>
+  <tbody>
+    {{#each Authors}}
+          <tr>
+            <td>{{Fname}}</td>
+            <td>{{Lname}}</td>
+            <td><input type = 'submit' method ='post' value = 'Delete' id = '{{ID}}'></input><td>
+        </tr>
+      {{/each}}
+  </tbody>
+</form>
+
+  <thead>
+    <th>Publisher(s)</th>
+  </thead>
+  <tbody>
+    {{#each Publishers}}
+        <tr>
+          <td>{{pub_name}}</td>
+        </tr>
+    {{/each}}
+  </tbody>
+
+
+  <thead>
+    <th>Genre(s)</th>
+  </thead>
+  <tbody>
+    {{#each Genres}}
+          <tr>
+            <td>{{gen_name}}</td>
+          </tr>
+      {{/each}}
+    </tbody>
+
+</table>
+
+</form>
+</div>
