@@ -34,3 +34,55 @@ function addgenre(TID){
     }
   })
 };
+
+function updatetitle(TID){
+  var tn = document.getElementById('tn').value;
+  $.ajax({
+    type: 'PUT',
+    data: {Title: tn, ID: TID, dtype: 'updatetitle'},
+    success: function(result){
+      alert('Title Updated');
+      window.location.reload();
+    }
+  })
+}
+
+function updateauthor(AID){
+  var fx = document.getElementById('fx').value;
+  var lx = document.getElementById('lx').value;
+  $.ajax({
+    type: 'PUT',
+    data: {first: fx, last: lx, ID: AID, dtype: 'updateauthor'},
+    success: function(result){
+      alert('Alert: Updating Author will change the Author name for all books that contained the previous Author.');
+      alert('Author Updated');
+      window.location.reload();
+    }
+  })
+}
+
+function updatepublisher(PID){
+  var px = document.getElementById('px').value;
+  $.ajax({
+    type: 'PUT',
+    data: {publisher: px, ID: PID, dtype: 'updatepublisher'},
+    success: function(result){
+      alert('Alert: Updating Publisher will change the Publisher name for all books that contained the previous Publisher.');
+      alert('Publisher Updated');
+      window.location.reload();
+    }
+  })
+}
+
+function updategenre(GID){
+  var gx = document.getElementById('gx').value;
+  $.ajax({
+    type: 'PUT',
+    data: {genre: gx, ID: GID, dtype: 'updategenre'},
+    success: function(result){
+      alert('Alert: Updating Genre will change the Genre name for all books that contained the previous Genre.');
+      alert('Genre Updated');
+      window.location.reload();
+    }
+  })
+}

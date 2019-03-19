@@ -400,6 +400,61 @@ function ConnectGenreTitle(req, res, mysql, complete3){
   });
 }
 
+function UpdateTitle(req, res, mysql, complete2){
+  var sql = "UPDATE Book SET Title = ? WHERE ID = ?";
+  var inserts = [req.body.Title, req.body.ID];
+  mysql.pool.query(sql, inserts, (error, results, feilds)=>{
+    if(error){
+      console.log(error);
+      res.end();
+    }
+    else{
+      complete2();
+    }
+  });
+}
+
+function UpdateAuthor(req, res, mysql, complete2){
+  var sql = "UPDATE Author SET Fname = ?, Lname = ? WHERE ID = ?"
+  var inserts = [req.body.first, req.body.last, req.body.ID];
+  mysql.pool.query(sql, inserts, (error, results, feilds)=>{
+    if(error){
+      console.log(error);
+      res.end();
+    }
+    else{
+      complete2();
+    }
+  });
+}
+
+function Updatepublisher(req, res, mysql, complete2){
+  var sql = "UPDATE Publisher SET pub_name = ? WHERE ID = ?"
+  var inserts = [req.body.publisher, req.body.ID];
+  mysql.pool.query(sql, inserts, (error, results, feilds)=>{
+    if(error){
+      console.log(error);
+      res.end();
+    }
+    else{
+      complete2();
+    }
+  });
+}
+
+function Updategenre(req, res, mysql, complete2){
+  var sql = "UPDATE Genres SET gen_name = ? WHERE ID = ?";
+  var inserts = [req.body.genre, req.body.ID];
+  mysql.pool.query(sql, inserts, (error, results, feilds)=>{
+    if(error){
+      console.log(error);
+      res.end();
+    }
+    else{
+      complete2();
+    }
+  });
+}
 
 router.put('/:ID', (req, res)=>{
   var mysql = req.app.get('mysql');
@@ -442,6 +497,30 @@ router.put('/:ID', (req, res)=>{
           res.end();
         }
       }
+    }
+  }
+  else if (req.body.dtype == 'updatetitle'){
+    UpdateTitle(req, res, mysql, complete2);
+    function complete2(){
+      res.end();
+    }
+  }
+  else if (req.body.dtype == 'updateauthor'){
+    UpdateAuthor(req, res, mysql, complete2);
+    function complete2(){
+      res.end();
+    }
+  }
+  else if (req.body.dtype == 'updatepublisher'){
+    Updatepublisher(req, res, mysql, complete2);
+    function complete2(){
+      res.end();
+    }
+  }
+  else if (req.body.dtype == 'updategenre'){
+    Updategenre(req, res, mysql, complete2);
+    function complete2(){
+      res.end();
     }
   }
 

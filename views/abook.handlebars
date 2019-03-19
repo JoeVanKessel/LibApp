@@ -15,9 +15,9 @@
   <tbody>
     {{#each Title}}
           <tr>
-            <td><input type= 'text' value='{{Title}}'></input></td>
+            <td><input type= 'text' id = 'tn' value='{{Title}}'></input></td>
             <td><button onclick="deletetitle({{ID}})">Delete</button>
-            <button onclick="updatetitle()">Update Title</button></td>
+            <button onclick="updatetitle({{ID}})">Update Title</button></td>
           </tr>
       {{/each}}
   </tbody>
@@ -29,10 +29,10 @@
   <tbody>
     {{#each Authors}}
           <tr>
-            <td><input type= 'text' value={{Fname}}></input></td>
-            <td><input type= 'text' value={{Lname}}></input></td>
+            <td><input type= 'text' id = 'fx' value={{Fname}}></input></td>
+            <td><input type= 'text' id= 'lx' value={{Lname}}></input></td>
             <td><button onclick="deleteauthor({{AID}})">Delete</button>
-            <button onclick="updateauthor()">Update Author</button></td>
+            <button onclick="updateauthor({{AID}})">Update Author</button></td>
           </tr>
       {{/each}}
       <tr>
@@ -48,9 +48,9 @@
   <tbody>
     {{#each Publishers}}
         <tr>
-          <td><input type= 'text' value={{pub_name}}></input></td>
+          <td><input type= 'text' id = 'px' value={{pub_name}}></input></td>
           <td><button onclick="deletepublisher({{PID}})">Delete</button>
-          <button onclick="updatepublisher()">Update Publisher</button></td>
+          <button onclick="updatepublisher({{PID}})">Update Publisher</button></td>
         </tr>
     {{/each}}
     <tr>
@@ -66,9 +66,9 @@
   <tbody>
     {{#each Genres}}
           <tr>
-            <td><input type= 'text' value={{gen_name}}></input></td>
+            <td><input type= 'text' id = 'gx' value={{gen_name}}></input></td>
             <td><button onclick="deletegenre({{GID}})">Delete</button>
-            <button onclick="updategenre()">Update Genre</button></td>
+            <button onclick="updategenre({{GID}})">Update Genre</button></td>
           </tr>
       {{/each}}
         <tr>
