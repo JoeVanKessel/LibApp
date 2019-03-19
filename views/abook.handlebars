@@ -9,7 +9,6 @@
 {{#each Title}}
 <h1>{{Title}}:</h1>
 {{/each}}
-<form id='update' action='/abook/{{ID}}', method='put'>
 <table>
   <thead>
     <th>Title</th>
@@ -17,11 +16,11 @@
   <tbody>
     {{#each Title}}
           <tr>
-
             <td><input type= 'text' value='{{Title}}'></input></td>
-            <td><button onclick="deletetitle({{ID}})">Delete</button><td>
+            <td><button onclick="deletetitle({{ID}})">Delete</button>
+            <button onclick="updatetitle()">Update Title</button></td>
           </tr>
-          {{/each}}
+      {{/each}}
   </tbody>
 
   <thead>
@@ -31,13 +30,17 @@
   <tbody>
     {{#each Authors}}
           <tr>
-
             <td><input type= 'text' value={{Fname}}></input></td>
             <td><input type= 'text' value={{Lname}}></input></td>
-            <td><button onclick="deleteauthor({{AID}})">Delete</button></td>
-
-        </tr>
+            <td><button onclick="deleteauthor({{AID}})">Delete</button>
+            <button onclick="updateauthor()">Update Author</button></td>
+          </tr>
       {{/each}}
+      <tr>
+        <td><input type= 'text' name='addfname' id='fn' value='Add author first'></input></td>
+        <td><input type= 'text' name='addlname' id='ln' value='Add author last'></input></td>
+        <td><button onclick="addauthor({{ID}})">Add Author</button></td>
+      </tr>
   </tbody>
 
   <thead>
@@ -47,9 +50,14 @@
     {{#each Publishers}}
         <tr>
           <td><input type= 'text' value={{pub_name}}></input></td>
-          <td><button onclick="deletepublisher({{PID}})">Delete</button></td>
+          <td><button onclick="deletepublisher({{PID}})">Delete</button>
+          <button onclick="updatepublisher()">Update Publisher</button></td>
         </tr>
     {{/each}}
+    <tr>
+      <td><input type= 'text' name='publisher' id = 'pn' value='Add publisher'></input></td>
+      <td><button onclick="addpublisher({{ID}})">Add Publisher</button></td>
+    </tr>
   </tbody>
 
 
@@ -60,10 +68,14 @@
     {{#each Genres}}
           <tr>
             <td><input type= 'text' value={{gen_name}}></input></td>
-            <td><button onclick="deletegenre({{GID}})">Delete</button></td>
+            <td><button onclick="deletegenre({{GID}})">Delete</button>
+            <button onclick="updategenre()">Update Genre</button></td>
           </tr>
       {{/each}}
+        <tr>
+          <td><input type= 'text' name='genre' id = 'gn' value='Add Genre'></input></td>
+          <td><button onclick="addgenre({{ID}})">Add Genre</button></td>
+        </tr>
     </tbody>
 </table>
-</form>
 <h1>{{message}}</h1>

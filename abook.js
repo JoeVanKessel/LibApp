@@ -58,7 +58,7 @@ router.get('/:ID', function(req, res){
   var callbackcount = 0;
   var context = {};
   var mysql = req.app.get('mysql');
-  context.script = ['delete.js'];
+  context.script = ['delete.js', 'update.js'];
   getTitleByBookId(res, mysql, context, req.params.ID, complete);
   getAuthorsByBookId(res, mysql, context, req.params.ID, complete);
   getPublishersByBookId(res, mysql, context, req.params.ID, complete);
@@ -174,11 +174,277 @@ router.delete('/:ID', (req, res)=>{
   }
 });
 
+function AddAuthor(req, res, mysql, complete2){
+  var checkAuthorExists = "SELECT ID FROM Author WHERE Fname = ? AND Lname = ?";
+  var sql = "INSERT INTO Author (Fname, Lname) VALUES(?, ?)";
+  console.log(req.body.Title);
+  var inserts = [req.body.first, req.body.last];
 
-router.put(':/ID', (req, res)=>{
+  checkAuthorExists = mysql.pool.query(checkAuthorExists, inserts, (error, results, feilds)=>{
+    if(error){
+      console.log(error);
+      res.end();
+    }
+    else{
+      if (results == ''){
+        console.log("Author Doesnt Exist");
+        sql = mysql.pool.query(sql, inserts, (error, results, feilds)=>{
+          if(error){
+            console.log(error);
+            res.end();
+          }
+          else{
+            complete2();
+          }
+        });
+      }
+      else{
+      //  console.log("Author Already Exists");
+        complete2();
+      }
+    }
+  });
+}
+
+function AddPublisher(req, res, mysql, complete2){
+  var checkPublisherExists = "SELECT ID FROM Publisher WHERE pub_name = ?";
+  var sql = "INSERT INTO Publisher (pub_name) VALUES(?)";
+  var inserts = [req.body.publisher];
+
+  checkPublisherExists = mysql.pool.query(checkPublisherExists, inserts, (error, results, feilds)=>{
+  if(error){
+    console.log(error);
+    res.end();
+  }
+  else{
+    if (results == ''){
+      console.log("Publisher Doesnt Exist");
+      sql = mysql.pool.query(sql, inserts, (error, results, feilds)=>{
+        if(error){
+          console.log(error);
+          res.end();
+        }
+        else{
+          complete2();
+        }
+      });
+    }
+    else{
+    //  console.log("Author Already Exists");
+      complete2();
+    }
+  }
+});
+}
+
+function ConnectPublisherTitle(req, res, mysql, complete3){
+  var insertsB = [req.body.Title];
+  var sqlPid = "SELECT ID FROM Publisher WHERE pub_name = ?";
+  var insertsP = [req.body.publisher];
+  var publisherID = {};
+
+  sqlPid = mysql.pool.query(sqlPid, insertsP, (error, results, feilds)=>{
+    if(error){
+      console.log(error);
+      res.end();
+    }
+    else{
+      //console.log(results);
+      publisherID  = results[0];
+          //  console.log(publisherID.ID);
+          //  console.log(bookID.ID);
+      var inserts = [req.body.Title, publisherID.ID];
+      var checkBookPublisherExists = "SELECT BID, PID FROM Book_Publisher WHERE BID = ? AND PID = ?";
+      var sql = 'INSERT INTO Book_Publisher (BID, PID) VALUES(?, ?)';
+      checkBookPublisherExists = mysql.pool.query(checkBookPublisherExists, inserts, (error, results, feilds)=>{
+      //  console.log(results);
+      if(error){
+        console.log(error);
+        res.end();
+      }
+      else{
+        if(results == ''){
+          sql = mysql.pool.query(sql, inserts, (error, results, feilds)=>{
+            if(error){
+              console.log(error);
+              res.end()
+            }
+            else{
+              complete3();
+            }
+          });
+        }
+      }
+    });
+    console.log('Connection Exists');
+    complete3();
+    }
+});
+}
+
+
+function ConnectAuthorTitle(req, res, mysql, complete3){
+  var sqlAid = "SELECT ID, Fname, Lname FROM Author WHERE Fname = ? AND Lname = ?";
+  var insertsA = [req.body.first, req.body.last];
+  var authorID = {};
+
+  sqlAid = mysql.pool.query(sqlAid, insertsA, (error, results, feilds)=>{
+    if(error){
+      console.log(error);
+      res.end();
+    }
+    else{
+      authorID  = results[0];
+      //console.log(authorID.ID);
+      //console.log(bookID.ID);
+      var inserts = [req.body.Title, authorID.ID];
+      var checkBookAuthorExists = "SELECT BID, AID FROM Book_Authors WHERE BID = ? AND AID = ?";
+      var sql = 'INSERT INTO Book_Authors (BID, AID) VALUES(?, ?)';
+      checkBookAuthorExists = mysql.pool.query(checkBookAuthorExists, inserts, (error, results, feilds)=>{
+      //console.log(results);
+        if(error){
+          console.log(error);
+          res.end();
+        }
+        else{
+          if(results == ''){
+            sql = mysql.pool.query(sql, inserts, (error, results, feilds)=>{
+              if(error){
+              //console.log(results);
+                console.log(error);
+                res.end()
+              }
+              else{
+                complete3();
+              }
+          });
+        }
+      }
+    });
+    console.log('Connection Exists');
+    complete3();
+  }
+});
+}
+
+function AddGenre(req, res, mysql, complete2){
+  var checkGenreExists = "SELECT ID FROM Genres WHERE gen_name = ?";
+  var sql = "INSERT INTO Genres (gen_name) VALUES(?)";
+  var inserts = [req.body.genre];
+
+  checkGenreExists = mysql.pool.query(checkGenreExists, inserts, (error, results, feilds)=>{
+  if(error){
+    console.log(error);
+    res.end();
+  }
+  else{
+    if (results == ''){
+      console.log("Genre Doesnt Exist");
+      sql = mysql.pool.query(sql, inserts, (error, results, feilds)=>{
+        if(error){
+          console.log(error);
+          res.end();
+        }
+        else{
+          complete2();
+        }
+      });
+    }
+    else{
+      //console.log("Genre Already Exists");
+      complete2();
+    }
+  }
+});
+}
+
+
+function ConnectGenreTitle(req, res, mysql, complete3){
+  var insertsB = [req.body.Title];
+  var sqlPid = "SELECT ID FROM Genres WHERE gen_name = ?";
+  var insertsP = [req.body.genre];
+  var genreID = {};
+
+
+  sqlPid = mysql.pool.query(sqlPid, insertsP, (error, results, feilds)=>{
+    if(error){
+      console.log(error);
+      res.end();
+    }
+    else{
+      genreID  = results[0];
+      var inserts = [req.body.Title, genreID.ID];
+      var checkBookGenreExists = "SELECT BID, GID FROM Book_Genre WHERE BID = ? AND GID = ?";
+      var sql = 'INSERT INTO Book_Genre (BID, GID) VALUES(?, ?)';
+      checkBookGenreExists = mysql.pool.query(checkBookGenreExists, inserts, (error, results, feilds)=>{
+        if(error){
+          console.log(error);
+          res.end();
+        }
+        else{
+          if(results == ''){
+            sql = mysql.pool.query(sql, inserts, (error, results, feilds)=>{
+              if(error){
+                console.log(error);
+                res.end()
+              }
+              else{
+                complete3();
+              }
+            });
+          }
+        }
+      });
+      complete3();
+    }
+  });
+}
+
+
+router.put('/:ID', (req, res)=>{
   var mysql = req.app.get('mysql');
-  var callbackcount = 0;
-  var context = {};
+
+  if (req.body.dtype == 'addauthor'){
+    var callbackcountx = 0;
+    AddAuthor(req, res, mysql, complete2);
+    function complete2(){
+      callbackcountx++;
+      if (callbackcountx >= 1){
+        ConnectAuthorTitle(req, res, mysql, complete3);
+        function complete3(){
+          res.end();
+        }
+      }
+    }
+  }
+  else if (req.body.dtype == 'addpublisher'){
+    var callbackcountx = 0;
+    AddPublisher(req, res, mysql, complete2);
+    function complete2(){
+      callbackcountx++;
+      if (callbackcountx >= 1){
+        ConnectPublisherTitle(req, res, mysql, complete3);
+        function complete3(){
+          res.end();
+        }
+      }
+    }
+  }
+  else if (req.body.dtype == 'addgenre'){
+    var callbackcountx = 0;
+    AddGenre(req, res, mysql, complete2);
+    function complete2(){
+      callbackcountx++;
+      if (callbackcountx >= 1){
+        ConnectGenreTitle(req, res, mysql, complete3);
+        function complete3(){
+        //  console.log('here');
+          res.end();
+        }
+      }
+    }
+  }
+
 });
 
 return router;
