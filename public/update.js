@@ -6,7 +6,7 @@ function addauthor(TID){
     data: {first: fn, last: ln, Title: TID, dtype: 'addauthor'},
     success: function(result){
       alert('Author Added');
-      window.location.reload(true);
+      window.location.reload();
     }
   })
 };
@@ -18,7 +18,7 @@ function addpublisher(TID){
     data: {publisher: pn, Title: TID, dtype: 'addpublisher'},
     success: function(result){
       alert('Publisher Added');
-      window.location.reload(true);
+      window.location.reload();
     }
   })
 };
@@ -30,7 +30,7 @@ function addgenre(TID){
     data: {genre: gn, Title: TID, dtype: 'addgenre'},
     success: function(result){
       alert('Genre Added');
-      window.location.reload(true);
+      window.location.reload();
     }
   })
 };
