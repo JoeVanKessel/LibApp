@@ -1,6 +1,7 @@
+module.exports = function(){
 var express = require('express');
 var router = express.Router();
-module.exports = router;
+
 
 
 function AddTitle(req, res, mysql, complete, titleExistsInDB){
@@ -30,7 +31,7 @@ function AddTitle(req, res, mysql, complete, titleExistsInDB){
       else{
       //  console.log("Title Already Exists");
         titleID = results[0];
-        console.log(titleID);
+        //console.log(titleID);
         titleExistsInDB(titleID);
       }
     }
@@ -95,8 +96,8 @@ function ConnectAuthorTitle(req, res, mysql, completetwo){
           }
           else{
             authorID  = results[0];
-            console.log(authorID.ID);
-            console.log(bookID.ID);
+            //console.log(authorID.ID);
+            //console.log(bookID.ID);
             var inserts = [bookID.ID, authorID.ID];
             var checkBookAuthorExists = "SELECT BID, AID FROM Book_Authors WHERE BID = ? AND AID = ?";
             var sql = 'INSERT INTO Book_Authors (BID, AID) VALUES(?, ?)';
@@ -110,7 +111,7 @@ function ConnectAuthorTitle(req, res, mysql, completetwo){
                 if(results == ''){
                   sql = mysql.pool.query(sql, inserts, (error, results, feilds)=>{
                     if(error){
-                      console.log(results);
+                      //console.log(results);
                       console.log(error);
                       res.end()
                     }
@@ -196,7 +197,7 @@ function ConnectPublisherTitle(req, res, mysql, completetwo){
             var checkBookPublisherExists = "SELECT BID, PID FROM Book_Publisher WHERE BID = ? AND PID = ?";
             var sql = 'INSERT INTO Book_Publisher (BID, PID) VALUES(?, ?)';
             checkBookPublisherExists = mysql.pool.query(checkBookPublisherExists, inserts, (error, results, feilds)=>{
-              console.log(results);
+            //  console.log(results);
               if(error){
                 console.log(error);
                 res.end();
@@ -214,7 +215,7 @@ function ConnectPublisherTitle(req, res, mysql, completetwo){
                   });
                 }
                 else{
-                  console.log('Connection Exists');
+                  //console.log('Connection Exists');
                   completetwo();
                 }
               }
@@ -281,7 +282,7 @@ function ConnectGenreTitle(req, res, mysql, completetwo, context){
             res.end();
           }
           else{
-            console.log(results);
+            //console.log(results);
             genreID  = results[0];
           //  console.log(publisherID.ID);
           //  console.log(bookID.ID);
@@ -338,7 +339,7 @@ router.post('/', (req, res)=>{
   var context = {};
   if (checkFeildsFull(req, res) == true){
     context.message = "You Must Fill In All Feilds";
-    console.log(context);
+  //  console.log(context);
     res.render('addbook', context);
   }
   else{
@@ -371,3 +372,5 @@ router.post('/', (req, res)=>{
     res.render('addbook', context);
   }
 });
+return router;
+}();

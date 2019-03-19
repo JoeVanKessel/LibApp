@@ -1,3 +1,4 @@
+
 <nav class="nav-bar-fixed-top">
   <div class='nav-container'>
       <a href = '/addbook'>Add Book To Catalog</a>
@@ -5,12 +6,10 @@
       <a href = '/'>Home</a>
   </div>
 </nav>
-
-<h1>{{#each Title}}{{Title}}{{/each}}:</h1>
-
-<form action = '/abook/{{ID}}' method='post'>
-
-
+{{#each Title}}
+<h1>{{Title}}:</h1>
+{{/each}}
+<form id='update' action='/abook/{{ID}}', method='put'>
 <table>
   <thead>
     <th>Title</th>
@@ -18,13 +17,12 @@
   <tbody>
     {{#each Title}}
           <tr>
-            <td>{{Title}}</td>
+
+            <td><input type= 'text' value='{{Title}}'></input></td>
+            <td><button onclick="deletetitle({{ID}})">Delete</button><td>
           </tr>
           {{/each}}
-      </form>
-
   </tbody>
-
 
   <thead>
     <th>Author First</th>
@@ -33,13 +31,14 @@
   <tbody>
     {{#each Authors}}
           <tr>
-            <td>{{Fname}}</td>
-            <td>{{Lname}}</td>
-            <td><input type = 'submit' method ='post' value = 'Delete' id = '{{ID}}'></input><td>
+
+            <td><input type= 'text' value={{Fname}}></input></td>
+            <td><input type= 'text' value={{Lname}}></input></td>
+            <td><button onclick="deleteauthor({{AID}})">Delete</button></td>
+
         </tr>
       {{/each}}
   </tbody>
-</form>
 
   <thead>
     <th>Publisher(s)</th>
@@ -47,7 +46,8 @@
   <tbody>
     {{#each Publishers}}
         <tr>
-          <td>{{pub_name}}</td>
+          <td><input type= 'text' value={{pub_name}}></input></td>
+          <td><button onclick="deletepublisher({{PID}})">Delete</button></td>
         </tr>
     {{/each}}
   </tbody>
@@ -59,11 +59,11 @@
   <tbody>
     {{#each Genres}}
           <tr>
-            <td>{{gen_name}}</td>
+            <td><input type= 'text' value={{gen_name}}></input></td>
+            <td><button onclick="deletegenre({{GID}})">Delete</button></td>
           </tr>
       {{/each}}
     </tbody>
-
 </table>
-
 </form>
+<h1>{{message}}</h1>

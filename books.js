@@ -1,34 +1,35 @@
+module.exports = function(){
+
 var express = require('express');
 var router = express.Router();
-module.exports = router;
 
-  function getallbooks(context, mysql, complete){
-    mysql.pool.query("SELECT DISTINCT ID, Title from Book", function(error, results, fields){
-    if(!!error){
-      console.log('error in query', error);
-    }
-    else{
-      console.log('sucessfull query');
-  //    console.log(results);
-      context.Book = results;
-      complete();
-    }
-
-    });
+function getallbooks(context, mysql, complete){
+  mysql.pool.query("SELECT DISTINCT ID, Title from Book", function(error, results, fields){
+  if(!!error){
+    console.log('error in query', error);
+  }
+  else{
+  //  console.log('sucessfull query');
+//    console.log(results);
+    context.Book = results;
+    complete();
   }
 
-  router.get('/', function(req, res){
-    var callbackcount = 0;
-    var context = {};
-    var mysql = req.app.get('mysql');
-    getallbooks(context, mysql, complete);
-    function complete(){
-      callbackcount++;
-      if(callbackcount >= 1){
-        res.render('books',context);
-      }
-    }
   });
+}
+
+router.get('/', function(req, res){
+  var callbackcount = 0;
+  var context = {};
+  var mysql = req.app.get('mysql');
+  getallbooks(context, mysql, complete);
+  function complete(){
+    callbackcount++;
+    if(callbackcount >= 1){
+      res.render('books',context);
+    }
+  }
+});
 
 
   router.post('/', function(req, res){
@@ -57,3 +58,7 @@ module.exports = router;
        }
      });
   });
+
+
+ return router;
+ }();
